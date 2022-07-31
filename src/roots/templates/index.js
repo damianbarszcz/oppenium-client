@@ -1,0 +1,13 @@
+export { default as Overview } from './Overview/Overview';
+export { default as Computers } from './Computers/Computers';
+export { default as ComputerComponents } from './ComputerComponents/ComputerComponents';
+export { default as Smartphones } from './Smartphones/Smartphones';
+export { default as Login } from './Login/Login';
+export { default as Register } from './Register/Register';
+export { default as AccountOverview } from './AccountOverview/AccountOverview';
+export { default as AccountOrders } from './AccountOrders/AccountOrders';
+export { default as SingleComputer } from './SingleComputer/SingleComputer';
+export { default as SingleComputerComponent } from './SingleComputerComponent/SingleComputerComponent';
+export { default as SingleSmartphone } from './SingleSmartphone/SingleSmartphone';
+export { default as AccountOrderSuccess } from './AccountOrderSuccess/AccountOrderSuccess';
+export { default as AccountOrderCancel } from './AccountOrderCancel/AccountOrderCancel';

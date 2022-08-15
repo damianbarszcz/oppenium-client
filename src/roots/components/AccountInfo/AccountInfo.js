@@ -61,13 +61,13 @@ const AccountInfo = (props) => {
                 </InfoUserHeader>
 
                 <InfoUserLabel><strong>Your name:</strong></InfoUserLabel>
-                <InfoUserData>{props.user.UserData.first_name} {props.user.UserData.last_name} </InfoUserData>
+                <InfoUserData> {props.userData.first_name} {props.userData.last_name}  </InfoUserData>
 
                 <InfoUserLabel><strong> Email address: </strong></InfoUserLabel>
-                <InfoUserData> {props.user.email}  </InfoUserData>
+                <InfoUserData> {props.user.email} </InfoUserData>
 
                 <InfoUserLabel><strong> Phone number: </strong></InfoUserLabel>
-                <InfoUserData> {props.user.UserData.phone_number} </InfoUserData>
+                <InfoUserData> {props.userData.phone_number} </InfoUserData>
             </InfoUser>
         </InfoBlock>
     );

@@ -16,7 +16,7 @@ const AccountOrderCancel = (props) => {
         <>
             <Navigation user = {props.user}  />
             <Container>
-                <AccountMenu user = {props.user}  />
+                <AccountMenu user = {props.user} userData = {props.userData}  />
                 <AccountOrderMsg msgTitle="Error..."  msgCaption="We have problem with your payment. You must return and try to pay again." />
             </Container>
             <Footer/>

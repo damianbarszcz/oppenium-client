@@ -12,18 +12,25 @@ const Container = styled.main`
   margin:auto;
 `
 
+
 const Computers = (props) => {
     const [computers, getComputers] = useState([]);
 
-    const getComputersAPI = useCallback(async () => {
-        const result = await axios('http://localhost:8080/api/product/computers');
-        getComputers(result.data);
-
-    }, [])
-
     useEffect(() => {
-        getComputersAPI();
-    }, [getComputersAPI])
+        let abortController;
+        (async () => {
+            abortController = new AbortController();
+            let signal = abortController.signal;    
+
+             const { data } = await axios.get(
+                 'http://localhost:8080/api/product/computers',
+                 { signal: signal }
+             );
+             getComputers(data);
+        })();
+
+        return () => abortController.abort();
+    }, []);
 
     return (
         <>

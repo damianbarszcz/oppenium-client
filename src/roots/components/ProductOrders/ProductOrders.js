@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Link} from "react-router-dom";
 
 const OrderBlock = styled.div`
   padding: 1rem 2rem;
@@ -16,16 +15,6 @@ const OrdersInner = styled.div`
 `
 const OrdersHeaderTitle = styled.h1`
   font-family: 'Radio Canada', sans-serif;
-  color:#17183B;
-`
-const OrdersInnerCounter = styled.span`
-  display: block;
-  padding-bottom: 2rem;
-  margin-bottom:1rem;
-  border-bottom: 1px solid #f3f3f3;
-  width:100%;
-  font-family: 'Radio Canada', sans-serif;
-  font-size: 1.2rem;
   color:#17183B;
 `
 const OrderProduct = styled.div`
@@ -50,32 +39,9 @@ const OrderProductInfo = styled.div`
 const OrderProductPrice = styled.div`
   display: inline-block;
   width:100%;
-  font-family: 'Radio Canada', sans-serif;
-  color:#17183B;
-`
-const OrderDetails = styled.div`
-  display: block;
   text-align:right;
-  width:100%;
   font-family: 'Radio Canada', sans-serif;
-  font-size:1.25rem;
-  line-height: 2.5rem;
   color:#17183B;
-`
-
-const OrderActionsBtn = styled.button`
-  display: block;
-  padding: 1rem 2.5rem;
-  text-transform: uppercase;
-  font-family: 'Radio Canada', sans-serif;
-  background-color:#17183B;
-  transition: 0.25s ease-in-out;
-  text-decoration: none;
-  border:0;
-  cursor: pointer;
-  color:#FFFFFF;
-  font-weight: 600;
-  font-size:1rem;
 `
 const OrderNoProduct = styled.div`
     display:block;
@@ -85,52 +51,95 @@ const OrderNoProductCaption = styled.p`
     font-family: 'Radio Canada', sans-serif;
     font-size:1.25rem;
 `
-const OrdersInnerFlex = styled.div`
-    display:flex;
+const OrdersSeparateLine = styled.div`
     margin-top:3.5rem;
-    width:100%;
-    justify-content: space-between;
-    align-items:center;
+`
+const OrdersPriceTotal = styled.div`
+  display: block;
+  text-align:right;
+`
+
+const OrdersPriceTotalCaption = styled.p`
+    font-family: 'Radio Canada', sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    line-height: 2.5rem;
+    color:#17183B;
+`
+
+const NoDisplay = styled.span`
+    display:none;
 `
 
 const ProductOrders = (props) => {
 
-    const total = (props.cart.reduce((total,currentItem) =>  total = total + currentItem.product_price , 0 ));
+    let total = 0;
+
+    const orderPushed = [];
+
+    props.orders.map((currentItem) =>  orderPushed.push(currentItem.order_id));
+
+    const getTotalOrderPrice = (product_price) =>{
+        total = total + product_price 
+    }
+
+    const yourOrders = () => {
+        return (
+        props.orders.map((item,index) => (
+            (orderPushed[index-1] !=  item.order_id && index > 0 ) ? 
+            <>
+              <OrdersPriceTotal><OrdersPriceTotalCaption>{ total + ".00 $" } </OrdersPriceTotalCaption> </OrdersPriceTotal>
+
+              <NoDisplay>{total = 0}</NoDisplay>
+
+              <OrdersSeparateLine/>
+
+              <OrderProduct key={item.id}>
+                  <OrderProductArtwork src={`/images/products/${item.product_image}`}  alt={ item.product_title }/>
+
+                  <OrderProductInfo>{item.product_title}</OrderProductInfo>
+
+                  <OrderProductPrice>{item.product_price + ".00 $" } </OrderProductPrice>
+              </OrderProduct>
+
+              { getTotalOrderPrice(item.product_price) }
+            </>
+            : 
+
+            <>
+              <OrderProduct key={item.id}>
+                <OrderProductArtwork src={`/images/products/${item.product_image}`}  alt={ item.product_title }/>
+
+                <OrderProductInfo>{item.product_title}</OrderProductInfo>
+
+                <OrderProductPrice>{item.product_price + ".00 $" }</OrderProductPrice>
+              </OrderProduct>
+
+              { getTotalOrderPrice(item.product_price) }
+
+              {props.orders.length - 1 === index ? 
+                <OrdersPriceTotal><OrdersPriceTotalCaption>{ total + ".00 $" } </OrdersPriceTotalCaption> </OrdersPriceTotal>
+                : ''
+              }
+            </>
+          ) )
+      )
+    }
 
     return (
         <OrderBlock>
             <OrdersHeader>
-                <OrdersHeaderTitle>Orders </OrdersHeaderTitle>
+                <OrdersHeaderTitle>Your Orders </OrdersHeaderTitle>
             </OrdersHeader>
 
-            { props.cart.length > 0 ?
-              <>
-              <OrdersInner>
-                  <OrdersInnerCounter>Number of products : {props.cart.length } </OrdersInnerCounter>
-                  
-                  { props.cart.map(item =>
-                      <OrderProduct key={item.id}>
-                        <OrderProductArtwork src={`/images/products/${item.product_image}`}  alt={ item.product_title }/>
-
-                        <OrderProductInfo>{item.product_title}</OrderProductInfo>
-
-                        <OrderProductPrice>{item.product_price + ".00 $" }</OrderProductPrice>
-                    </OrderProduct>
-                  )}
-              </OrdersInner>
-
-              <OrdersInnerFlex>
-                  <div>
-                      <OrderActionsBtn type="button" onClick={props.makePayment}>Pay</OrderActionsBtn>
-                  </div>
-
-                  <OrderDetails>Total: <br/> <strong>{ total + ".00 $" } </strong></OrderDetails>
-              </OrdersInnerFlex>
-              </>
+            { props.orders.length > 0 ?
+              <OrdersInner> 
+                  { yourOrders() }
+              </OrdersInner> 
               :
 
               <OrderNoProduct>
-                <OrderNoProductCaption>No products added to the cart.</OrderNoProductCaption>
+                <OrderNoProductCaption>You have not made any orders yet.</OrderNoProductCaption>
               </OrderNoProduct>
             }
         </OrderBlock>

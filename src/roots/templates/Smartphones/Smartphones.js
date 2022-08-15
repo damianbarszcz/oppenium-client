@@ -1,8 +1,8 @@
-import React  from 'react';
-import { Navigation, CategoryHeader,CategoryFilter,CategoryProducts, Footer } from "../../components";
+import React,{useEffect, useState}  from 'react';
 import styled from "styled-components";
-import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
+
+import { Navigation, CategoryHeader,CategoryFilter,CategoryProducts, Footer } from "../../components";
 
 const Container = styled.main`
   display: grid;
@@ -16,14 +16,21 @@ const Container = styled.main`
 const Smartphones = (props) => {
     const [smartphones, getSmartphones] = useState([]);
 
-    const getSmartphonesAPI = useCallback(async () => {
-        const result = await axios('http://localhost:8080/api/product/smartphones');
-        getSmartphones(result.data);
-    }, [])
-
     useEffect(() => {
-        getSmartphonesAPI();
-    }, [getSmartphonesAPI])
+        let abortController;
+        (async () => {
+            abortController = new AbortController();
+            let signal = abortController.signal;    
+
+             const { data } = await axios.get(
+                 'http://localhost:8080/api/product/smartphones',
+                 { signal: signal }
+             );
+             getSmartphones(data);
+        })();
+
+        return () => abortController.abort();
+    }, []);
 
     return (
         <>

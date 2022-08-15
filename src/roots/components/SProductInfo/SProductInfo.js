@@ -25,7 +25,6 @@ const BlockBody = styled.div`
 `
 const BlockBodyPrice = styled.div`
   display: block;
-  margin-top: 3rem;
   margin-bottom: 2rem;
   font-family: 'Radio Canada', sans-serif;
   font-size: 1.75rem;
@@ -47,6 +46,7 @@ const BlockBodyCart = styled.button`
   display: inline-block;
   margin-top:2rem;
   padding: 0.75rem 2.5rem;
+  transition: 0.1s ease-in-out;
   border:0;
   line-height: 35px;
   font-family: 'Radio Canada', sans-serif;
@@ -56,6 +56,10 @@ const BlockBodyCart = styled.button`
   color:#ffffff;
   cursor:pointer;
   background-color:#5D5FEF;
+
+  &:hover{
+    background-color:#2e2fba;
+  }
 `
 
 const BlockBodyUnavailableCart = styled.button`
@@ -94,9 +98,9 @@ const SProductInfo = (props) => {
                     <BlockBodyParametersItem dangerouslySetInnerHTML={{__html: product_description.replace(/&/g, "<br/>")}} />
                 </BlockBodyParameters>
 
-                { props.product.availability  ?
-                    <form onSubmit={ props.addToCart }>
-                        <input type="text" name="cart_product_id" value={props.cartProductId} onChange={e => props.getCartProductId(e.target.value)} hidden/>
+                { props.product.availability ?
+                    <form onSubmit={ props.handleSubmit(props.handleForm ) }>
+                        <input type="text" name="product_id" value={props.product.id} {...props.register("product_id", { required: true })} hidden/>
                         <BlockBodyCart type="submit" >Add To cart</BlockBodyCart>
                     </form>
                     :

@@ -16,7 +16,7 @@ const AccountOrderSuccess = (props) => {
         <>
             <Navigation user = {props.user}  />
             <Container>
-                <AccountMenu user = {props.user}  />
+                <AccountMenu user = {props.user} userData = {props.userData}  />
                 <AccountOrderMsg msgTitle="Payment Successful"  msgCaption="Your payment was successful. You can now return to Oppenium dashboard." />
             </Container>
             <Footer/>

@@ -17,6 +17,7 @@ const OrderMsgInner = styled.div`
 
 const OrderMsgHeader = styled.header`
     text-align:center;
+    font-family: 'Radio Canada', sans-serif;
 `
 
 const OrderMsgActions = styled.div`
@@ -29,6 +30,7 @@ const OrderMsgActionsBtn = styled(Link)`
   padding: 1.5rem 2.5rem;
   text-transform: uppercase;
   font-family: 'Radio Canada', sans-serif;
+  transition: 0.1s ease-in-out;
   background-color:#17183B;
   transition: 0.25s ease-in-out;
   text-decoration: none;
@@ -37,6 +39,10 @@ const OrderMsgActionsBtn = styled(Link)`
   color:#FFFFFF;
   font-weight: 600;
   font-size:1rem;
+
+  &:hover{
+    background-color:#0096FF;
+  }
 `
 const OrderMsgHeaderTitle = styled.h1`
     line-height:5.5rem;

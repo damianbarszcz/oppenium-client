@@ -1,5 +1,6 @@
-import React, {useState,useEffect}  from 'react'
-import { BrowserRouter, Switch, Route, Redirect  } from "react-router-dom";
+import React,{ useState,useEffect }  from 'react';
+import {Route, Routes } from "react-router-dom";
+import { decodeToken } from "react-jwt";
 
 import {
     Overview,
@@ -10,67 +11,72 @@ import {
     Register,
     AccountOverview,
     AccountOrders,
-    SingleComputer,
-    SingleComputerComponent,
-    SingleSmartphone,
-    AccountOrderSuccess,
+    AccountCart,
+    SingleProduct,
     AccountOrderCancel,
+    AccountOrderSuccess,
+    ProtectedRoutes,
+    PublicRoutes
 } from "./templates";
 
-const App = (props) => {
-    const [user, getUser] = useState('');
+const App = () => {
+    const [user, setUser] = useState('');
+    const [userData, setUserData] = useState('');
 
+    async function getUser() {
+		const req = await fetch('http://localhost:8080/api/user/account', {
+			headers: { 'x-access-token': localStorage.getItem('token')},
+            credentials: 'include'
+		})
+		const data = await req.json()
 
-    useEffect(() => {(
-        async () => {
-            const response = await fetch('http://localhost:8080/api/user/data', {
-                headers: {'Content-Type': 'application/json'},
-                credentials: 'include'
-            });
+        console.log(data.UserData);
 
-            const content = await response.json();
+		if (data) {
+			setUser(data)
+            setUserData(data.UserData);
+            
+		} else { alert(data.error) }
+	}
+    
+    useEffect(() => {
+        const token = localStorage.getItem('token')
 
-            if(response.ok){  getUser(content);}
+        if(token){
+            const user = decodeToken(token)
 
-            else{  getUser('');  }
+            if(!user){
+                localStorage.removeItem('token')
+                window.location.href = '/login'
+            }
+
+            else{ getUser() }
         }
-       )();
-    });
+    }, []);
 
     return (
-        <BrowserRouter>
-            {user  ?
-            <Switch>
-                <Route exact path="/" render={(props) => <Overview user = {user} {...props} /> } />
-                <Route path="/computers" render={(props) => <Computers user = {user} {...props} /> }  />
-                <Route path="/single/computers/:id" render={(props) => <SingleComputer user = {user} {...props} /> }  />
-                <Route path="/computer-components" render={(props) => <ComputerComponents user = {user} {...props} /> }  />
-                <Route path="/single/computer-components/:id" render={(props) => <SingleComputerComponent user = {user} {...props} /> }  />
-                <Route path="/smartphones" render={(props) => <Smartphones user = {user} {...props} /> }  />
-                <Route path="/single/smartphones/:id" render={(props) => <SingleSmartphone user = {user} {...props} /> }  />
-                <Route path="/member/overview" render={(props) => <AccountOverview user = {user}  {...props} /> }  />
-                <Route path="/member/orders/:id" render={(props) => <AccountOrders user = {user}  {...props} /> }  />
-                <Route path="/member/order/success" render={(props) => <AccountOrderSuccess user = {user}  {...props} /> }  />
-                <Route path="/member/order/cancel" render={(props) => <AccountOrderCancel user = {user}  {...props} /> }  />
+        <Routes>
+            <Route exact path="/" element={<Overview user = {user}/> } />
+            <Route path="/computers" element={ <Computers user = {user}/> }  />
+            <Route exact path="/single/computers/:id" element={<SingleProduct user = {user} /> }  />
+            <Route path="/computer-components" element={<ComputerComponents user = {user}/> }  />
+            <Route path="/single/computer-components/:id" element={<SingleProduct user = {user}  /> }  />
+            <Route path="/smartphones" element={ <Smartphones  user = {user} /> }  />
+            <Route path="/single/smartphones/:id" element={<SingleProduct user = {user}  /> }  />
 
-                <Redirect to="/member/overview" />
-            </Switch>
-                :
-            <Switch>
-                <Route exact path="/" component={ Overview }  />
-                <Route path="/computers" component={ Computers } exact />
-                <Route path="/single/computers/:id" component={ SingleComputer } exact />
-                <Route path="/computer-components" component={ ComputerComponents } exact />
-                <Route path="/single/computer-components/:id" component={ SingleComputerComponent } exact />
-                <Route path="/smartphones" component={ Smartphones } exact />
-                <Route path="/single/smartphones/:id" component={ SingleSmartphone } exact />
-                <Route path="/login" component={ Login } exact />
-                <Route path="/register" component={ Register } exact />
+            <Route element={ <PublicRoutes  /> }>
+                <Route path="/login" element={ <Login /> } />
+                <Route path="/register" element={ <Register /> } />
+            </Route>
 
-                <Redirect to="/login" />
-            </Switch>
-            }
-        </BrowserRouter>
+            <Route element={ <ProtectedRoutes  /> }>
+                <Route path="/member/overview" element={ <AccountOverview user = {user} userData = {userData} />}  />
+                <Route path="/member/cart/:user_id" element={<AccountCart user = {user} userData = {userData}   />}  />
+                <Route path="/member/orders/:user_id" element={<AccountOrders user = {user} userData = {userData}  />}  />
+                <Route path="/member/order/success" element={ <AccountOrderSuccess user = {user} userData = {userData} />}  />
+                <Route path="/member/order/cancel" element={ <AccountOrderCancel user = {user} userData = {userData} />}  />
+            </Route>
+        </Routes>
     );
 }
 

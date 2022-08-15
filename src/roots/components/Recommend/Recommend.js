@@ -87,22 +87,6 @@ const ProductAvailability = styled.span`
   background-size:50%;
 `
 
-const ProductNotAvailability = styled.span`
-  display: block;
-  width:40px;
-  height: 40px;
-  font-family: 'Radio Canada', sans-serif;
-  font-weight: 400;
-  color:#17183B;
-  border: 1px solid #5B5B5B;
-  border-radius: 100%;
-  background-color:transparent;
-  background-image: url("http://localhost:3000/images/global/not-availability.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size:50%;
-`
-
 const Recommend = (props) => {
 
     return (
@@ -117,7 +101,7 @@ const Recommend = (props) => {
                             { props.recommendProducts.slice(0,8).map((recommendProduct) =>
                             <RecommendProduct to={`/single/${recommendProduct.category}/${recommendProduct.id}`} target="_self" key={recommendProduct.id}>
                                 <RecommendProductArtwork>
-                                    <RecommendProductArtworkImage src={`http://localhost:3000/images/products/${recommendProduct.product_image}`}  alt={ recommendProduct.product_title } />
+                                    <RecommendProductArtworkImage src={`/images/products/${recommendProduct.product_image}`}  alt={ recommendProduct.product_title } />
                                 </RecommendProductArtwork>
 
                                 <RecommendProductInfo>
@@ -127,11 +111,7 @@ const Recommend = (props) => {
                                 <RecommendProductInfoMore>
                                     <RecommendProductInfoPrice>{recommendProduct.product_price + ".00 $" }</RecommendProductInfoPrice>
 
-                                    {recommendProduct.availability ?
-                                        <ProductAvailability />
-                                        :
-                                        <ProductNotAvailability />
-                                    }
+                                    <ProductAvailability />
                                 </RecommendProductInfoMore>
                             </RecommendProduct>)}
                     </RecommendInner>

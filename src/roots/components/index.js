@@ -10,6 +10,7 @@ export { default as RegisterBanner } from './RegisterBanner/RegisterBanner';
 export { default as Footer } from './Footer/Footer';
 export { default as AccountMenu } from './AccountMenu/AccountMenu';
 export { default as ProductOrders } from './ProductOrders/ProductOrders';
+export { default as ProductCart } from './ProductCart/ProductCart';
 export { default as AccountInfo } from './AccountInfo/AccountInfo';
 export { default as SProductInfo } from './SProductInfo/SProductInfo';
 export { default as SProductMedia } from './SProductMedia/SProductMedia';

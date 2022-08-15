@@ -103,6 +103,23 @@ const LoginPanelFormErrorBox = styled.div`
   min-height: 2rem;
   transform:translateY(-0.75rem);
 `
+const LoginPanelFormSuccess  = styled.span`
+  display: block;
+  padding-left:1rem;
+  position: absolute;
+  font-family: 'Radio Canada', sans-serif;
+  line-height:2.9rem;
+  font-size:0.85rem;
+  color:#ffffff;
+`
+const LoginPanelFormSuccessBox = styled.div`
+  position: relative;
+  min-height: 3rem;
+  transform:translateY(-0.75rem);
+  background-color: #76BA99;
+`
+
+
 const LoginPanel = (props) => {
 
     return (
@@ -115,16 +132,24 @@ const LoginPanel = (props) => {
                             <LoginPanelHeaderTitle>Sign in</LoginPanelHeaderTitle>
                         </LoginPanelHeader>
 
-                        <LoginPanelForm onSubmit={ props.handleSubmit(props.handleForm ) } method="POST">
+                        <LoginPanelForm onSubmit={ props.handleSubmit(props.handleForm ) }>
                             { props.login_errors ?
                                 <LoginPanelFormErrorBox>
                                     <LoginPanelFormError>{props.login_errors}</LoginPanelFormError>
-                                </LoginPanelFormErrorBox> : '' }
+                                </LoginPanelFormErrorBox> 
+                                : '' 
+                            }
+
+                            { props.successMsg ?
+                                <LoginPanelFormSuccessBox>
+                                    <LoginPanelFormSuccess>{props.successMsg}</LoginPanelFormSuccess>
+                                </LoginPanelFormSuccessBox> : '' 
+                            }
 
                             <LoginPanelFormGroup>
                                 <FormLabel>Email address:</FormLabel>
 
-                                <FormInput id="email" name="email" type="email" {...props.register("email", { required: true })} tabIndex="1" />
+                                <FormInput name="email" type="email" {...props.register("email", { required: true })} tabIndex="1" />
 
                                 {props.errors.email && <LoginPanelFormError>Enter your e-mail address.</LoginPanelFormError> }
                             </LoginPanelFormGroup>
@@ -132,7 +157,7 @@ const LoginPanel = (props) => {
                             <LoginPanelFormGroup>
                                 <FormLabel>Password:</FormLabel>
 
-                                <FormInput id="password" name="password" type="password" {...props.register("password", { required: true })} tabIndex="2"/>
+                                <FormInput name="password" type="password" {...props.register("password", { required: true })} tabIndex="2"/>
 
                                 {props.errors.password && <LoginPanelFormError>Enter the password.</LoginPanelFormError> }
                             </LoginPanelFormGroup>

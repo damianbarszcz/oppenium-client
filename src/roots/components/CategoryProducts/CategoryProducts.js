@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import styled from 'styled-components';
+import {Link} from "react-router-dom";
 
 const ProductsSection = styled.section`
   width:100%;
@@ -10,7 +11,7 @@ const ProductsInner = styled.div`
   grid-template-columns: repeat(3,1fr);
   grid-gap:3.5rem;
 `
-const SingleProduct = styled.a`
+const SingleProduct = styled(Link)`
   display:flex;
   justify-content: space-between;
   flex-direction: column;
@@ -145,7 +146,7 @@ const CategoryProducts = (props) => {
         product.product_title.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const method = (propsText) => {
+    const StyledDescription = (propsText) => {
         let product_description = String(propsText);
 
         return   <SingleProductInfoDescryption dangerouslySetInnerHTML={{__html: product_description.replace(/&/g, "<br/>")}} />
@@ -167,7 +168,7 @@ const CategoryProducts = (props) => {
 
             <ProductsInner>
                 { searchResults.map((product) =>
-                    <SingleProduct href={`/single/${product.category}/${product.id}`} target="_self" key={product.id}>
+                    <SingleProduct to={`/single/${product.category}/${product.id}`} target="_self" key={product.id}>
                         <SingleProductArtwork>
                             <SingleProductArtworkImage src={`/images/products/${product.product_image}`}  alt={ product.product_title } />
                         </SingleProductArtwork>
@@ -175,7 +176,7 @@ const CategoryProducts = (props) => {
                         <SingleProductInfo>
                             <SingleProductInfoTitle>{product.product_title}</SingleProductInfoTitle>
 
-                            { method(product.description) }
+                            { StyledDescription(product.description) }
                         </SingleProductInfo>
 
                         <SingleProductInfoMore>

@@ -1,20 +1,25 @@
-import React, { useState,useEffect,useCallback } from 'react';
-import { Recommend,Navigation, Footer } from "../../components";
+import React, { useState,useEffect } from 'react';
+import { Recommend, Navigation, Footer } from "../../components";
 import axios from 'axios';
 
-function Overview(props) {
-
+const Overview = (props) => {
     const [recommendProducts, getRecommendProducts] = useState([]);
 
-    const getCollectionAPI = useCallback(async () => {
-        const result = await axios('http://localhost:8080/api/product/recommend');
-        getRecommendProducts(result.data);
-    }, [])
-
     useEffect(() => {
-        getCollectionAPI();
-    }, [getCollectionAPI])
+        let abortController;
+        (async () => {
+            abortController = new AbortController();
+            let signal = abortController.signal;    
 
+             const { data } = await axios.get(
+                 'http://localhost:8080/api/product/recommend',
+                 { signal: signal }
+             );
+             getRecommendProducts(data);
+        })();
+        return () => abortController.abort();
+    }, []);
+    
     return (
         <>
             <Navigation user = {props.user} />

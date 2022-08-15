@@ -41,12 +41,17 @@ const NavListItem = styled.li`
 `
 const NavListItemLink = styled(Link)`
   display: inline-block;
+  transition: 0.1s ease-in-out;
   text-decoration: none;
   font-size: 0.85rem;
   font-family: 'Radio Canada', sans-serif;
   text-transform: uppercase;
   font-weight: 600;
   color:#17183B;
+
+  &:hover{
+    color:#0096FF;
+  }
 `
 const NavActions = styled.div`
   display:flex;
@@ -58,14 +63,17 @@ const NavActionsBtn = styled(Link)`
   text-transform: uppercase;
   font-family: 'Radio Canada', sans-serif;
   background-color:#17183B;
-  transition: 0.25s ease-in-out;
+  transition: 0.1s ease-in-out;
   text-decoration: none;
   border:0;
   cursor: pointer;
   color:#FFFFFF;
   font-weight: 600;
   font-size:0.85rem;
-  
+
+  &:hover{
+    background-color:#0096FF;
+  }
 `
 
 const NavActionsLogout = styled.button`
@@ -75,24 +83,27 @@ const NavActionsLogout = styled.button`
   text-transform: uppercase;
   font-family: 'Radio Canada', sans-serif;
   background-color:#17183B;
-  transition: 0.25s ease-in-out;
+  transition: 0.1s ease-in-out;
   text-decoration: none;
   border:0;
   cursor: pointer;
   color:#FFFFFF;
   font-weight: 600;
   font-size:0.85rem;
+
+  &:hover{
+    background-color:#0096FF;
+  }
 `
 
 const Navigation = (props) => {
 
-    const handleLogout = async () =>{
-
-        await fetch('http://localhost:8080/api/user/logout', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          credentials: 'include'
-        });
+    const handleLogout = (e) =>{
+        e.preventDefault();
+        
+        localStorage.removeItem('token')
+        
+        window.location.href = '/login'
     }
 
     return (
@@ -120,6 +131,7 @@ const Navigation = (props) => {
                             <>
                                 <NavActionsBtn type="button" to="/member/overview" target="_self">Panel</NavActionsBtn>
                                 <NavActionsLogout type="button" onClick={handleLogout}>Logout</NavActionsLogout>
+                                
                             </>
                             :
                             <NavActionsBtn type="button" to="/login">Login</NavActionsBtn>

@@ -1,9 +1,10 @@
 import React, {useState}  from 'react';
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from 'axios';
+import {useForm} from "react-hook-form";
 
 import { RegisterPanel, RegisterBanner } from "../../components";
-import {useForm} from "react-hook-form";
 
 const RegisterWrapper = styled.main`
   display: grid;
@@ -11,11 +12,12 @@ const RegisterWrapper = styled.main`
   height: 100vh;
 `
 
-const Register = (props) => {
+const Register = () => {
     const {handleSubmit, register,  formState: { errors } } = useForm();
     const [register_errors, get_register_errors ] = useState([]);
+    let navigate = useNavigate();
 
-    const handleForm =  async (data,e) => {
+    const handleForm = (data,e) => {
         e.preventDefault();
 
         const registerData = new FormData();
@@ -26,19 +28,18 @@ const Register = (props) => {
         registerData.append('phone_number', data.phone_number);
         registerData.append('password', data.password);
 
-        await axios.post(`http://localhost:8080/api/user/register`, registerData)
+        axios.post('http://localhost:8080/api/user/register', registerData)
         .then(response => {
             if (!response.error) {
-                if(!window.location.reload()){
-                    props.history.push(`/login`)
-                    e.target.reset();
-                }
+                navigate('/login', {state: { success: response.data}}) 
+                e.target.reset();
             }
         })
         .catch(error => {
-            get_register_errors(error?.response.data);
+            get_register_errors(error.response.data)
+            console.log(error.response.data);
             e.target.reset();
-        } );
+        });
     }
 
     return (

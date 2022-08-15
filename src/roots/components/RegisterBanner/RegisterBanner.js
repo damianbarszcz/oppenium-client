@@ -67,8 +67,13 @@ const RegisterBanner = () => {
 
                         <RegisterBannerInfo>
                             <RegisterBannerInfoWrapper>
-                                <RegisterBannerInfoArtwork src="./images/register/shop.png" alt="Order faster"/>
+                                <RegisterBannerInfoArtwork src="http://localhost:3000/images/register/shop.png" alt="Order faster"/>
                                 <RegisterBannerInfoCaption>Order faster</RegisterBannerInfoCaption>
+                            </RegisterBannerInfoWrapper>
+
+                            <RegisterBannerInfoWrapper>
+                                <RegisterBannerInfoArtwork src="http://localhost:3000/images/register/previous_order.png" alt="Check orders"/>
+                                <RegisterBannerInfoCaption>Check previous orders</RegisterBannerInfoCaption>
                             </RegisterBannerInfoWrapper>
                         </RegisterBannerInfo>
                     </RegisterBannerInner>

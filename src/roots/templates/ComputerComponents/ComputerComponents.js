@@ -15,14 +15,21 @@ const Container = styled.main`
 const ComputerComponents = (props) => {
     const [computer_components, getComputerComponents] = useState([]);
 
-    const getComputerComponentsAPI = useCallback(async () => {
-        const result = await axios('http://localhost:8080/api/product/computer-components');
-        getComputerComponents(result.data);
-    }, [])
-
     useEffect(() => {
-        getComputerComponentsAPI();
-    }, [getComputerComponentsAPI])
+        let abortController;
+        (async () => {
+            abortController = new AbortController();
+            let signal = abortController.signal;    
+
+             const { data } = await axios.get(
+                 'http://localhost:8080/api/product/computer-components',
+                 { signal: signal }
+             );
+             getComputerComponents(data);
+        })();
+
+        return () => abortController.abort();
+    }, []);
 
     return (
         <>
@@ -36,5 +43,6 @@ const ComputerComponents = (props) => {
         </>
     );
 }
+
 
 export default ComputerComponents;

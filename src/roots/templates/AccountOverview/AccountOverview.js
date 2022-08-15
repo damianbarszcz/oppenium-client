@@ -17,8 +17,8 @@ const AccountOverview = (props) => {
         <>
             <Navigation user = {props.user} />
             <Container>
-                <AccountMenu  user = {props.user}  />
-                <AccountInfo  user = {props.user}  />
+                <AccountMenu  user = {props.user} userData = {props.userData}  />
+                <AccountInfo user = {props.user} userData = {props.userData}  />
             </Container>
             <Footer/>
         </>

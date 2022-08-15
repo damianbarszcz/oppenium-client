@@ -54,7 +54,7 @@ const LoginBanner = () => {
                         </LoginBannerHeader>
 
                         <LoginBannerArtwork>
-                            <LoginBannerArtworkImg src="./images/login/join_oppenium.png" alt="Shopping person" />
+                            <LoginBannerArtworkImg src="http://localhost:3000/images/login/join_oppenium.png" alt="Shopping person" />
                         </LoginBannerArtwork>
                     </LoginBannerInner>
                 </LoginBannerBlock>

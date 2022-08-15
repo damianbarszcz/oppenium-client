@@ -1,9 +1,8 @@
-import React, { useEffect,useCallback, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navigation, Footer,AccountMenu,ProductOrders } from "../../components";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
-import {loadStripe} from '@stripe/stripe-js';
-const stripePromise = loadStripe('pk_test_51LPYVbFtCHoZJI1Yy7d4mCODWOb9Zo2IQ7XDcZ2CNKUzD7GbRuX15MTcbUedOxRivpfcnpgbLclhQfYJMf3ty1fy00viiDeLWs')
 
 
 const Container = styled.main`
@@ -16,41 +15,32 @@ const Container = styled.main`
 `
 
 const AccountOrders = (props) => {
-    const [cart, getCart] = useState([]);
+    const [orders, getOrders] = useState([]);
 
-    const getCartAPI = useCallback(async () => {
-        const id = props.match.params.id;
-
-        const result = await axios(`http://localhost:8080/api/cart/${id}/products`);
-
-        getCart(result.data);
-    }, [])
-
-    const makePayment = async (e) => {
-        e.preventDefault();
-        if(props.user){
-            const stripeResp = await fetch(`http://localhost:8080/api/order/make-peyment/${props.user.id}`)
-            const { id: sessionId } = await stripeResp.json()
-        
-            const stripe = await stripePromise;
-            const { error } = await stripe.redirectToCheckout({ sessionId });
-            console.log(error)
-        }
-        
-        else{ props.history.push(`/login`) }
-    }
+    let { user_id } = useParams(); 
 
     useEffect(() => {
-        getCartAPI();
+        let abortController;
+        (async () => {
+            abortController = new AbortController();
+            let signal = abortController.signal;    
 
-    }, [getCartAPI])
+            const { data } = await axios({
+                method: "GET",
+                url: `http://localhost:8080/api/order/${user_id}/products`}, 
+                {signal: signal}
+            )
+            getOrders(data);
+        })();
+        return () => abortController.abort();
+    }, []);
 
     return (
         <>
             <Navigation user = {props.user}  />
             <Container>
-                <AccountMenu user = {props.user}  />
-                <ProductOrders  cart = {cart}  makePayment={makePayment} />
+                <AccountMenu user = {props.user} userData = {props.userData}  />
+                <ProductOrders  orders = {orders} />
             </Container>
             <Footer/>
         </>

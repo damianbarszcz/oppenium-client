@@ -100,7 +100,7 @@ const OrdersInnerFlex = styled.div`
 
 const ProductCart = (props) => {
 
-  const total = (props.cart.reduce((total,currentItem) =>  total += currentItem.product_price , 0 ));
+  const total = (props.cart.reduce((total,currentItem) =>  total + currentItem.product_price , 0 ));
 
     return (
         <OrderBlock>

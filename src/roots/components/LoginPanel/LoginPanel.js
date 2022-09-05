@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css }  from 'styled-components';
 
 const LoginPanelSection = styled.section`
   position: relative;
@@ -118,7 +118,44 @@ const LoginPanelFormSuccessBox = styled.div`
   transform:translateY(-0.75rem);
   background-color: #76BA99;
 `
+const LoginPanelOAuth = styled.div`
+  margin-top:2rem;
+  min-width:100%;
+`
+const LoginPanelOAuthBtn = styled.a`
+  display:block;
+  padding:0.75rem 0.5rem;
+  margin-bottom:1rem;
+  min-width:100%;
+  font-family: 'Radio Canada', sans-serif;
+  font-weight:600;
+  font-size:0.9rem;
+  text-align:center;
+  text-transform:uppercase;
+  cursor:pointer;
 
+
+  ${props => props.google && css`
+      border: 2px solid #db4a39;
+      color:#db4a39;
+
+      &:hover{ color:#db4a39; }
+  `}
+
+  ${props => props.facebook && css`
+      border: 2px solid #4267B2;
+      color:#4267B2;
+
+      &:hover{ color:#4267B2; }
+  `}
+
+  ${props => props.github && css`
+      border: 2px solid #333;
+      color:#333;
+
+      &:hover{ color:#333;  }
+  `}
+`
 
 const LoginPanel = (props) => {
 
@@ -166,6 +203,12 @@ const LoginPanel = (props) => {
                                 <FormSubmit type="submit" tabIndex="3">Login</FormSubmit>
                             </LoginPanelFormGroup>
                         </LoginPanelForm>
+
+                        <LoginPanelOAuth>
+                            <LoginPanelOAuthBtn href="./" target="_self" google>Login with Google</LoginPanelOAuthBtn>
+                            <LoginPanelOAuthBtn href="./" target="_self" facebook>Login with Facebook</LoginPanelOAuthBtn>
+                            <LoginPanelOAuthBtn href="./" target="_self" github>Login with Github</LoginPanelOAuthBtn>
+                        </LoginPanelOAuth>
 
                         <LoginPanelRegister>
                             <LoginPanelRegisterCaption>I don’t have an account ?

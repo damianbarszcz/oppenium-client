@@ -80,7 +80,7 @@ const ProductOrders = (props) => {
     props.orders.map((currentItem) =>  orderPushed.push(currentItem.order_id));
 
     const getTotalOrderPrice = (product_price) =>{
-        total = total + product_price 
+        total += product_price 
     }
 
     const yourOrders = () => {

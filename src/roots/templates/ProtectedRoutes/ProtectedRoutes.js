@@ -6,9 +6,8 @@ const useAuth=()=>{
     
     if(user){
       return true
-    } else {
-      return false
-    }
+    } 
+    return false;
 }
 
 const ProtectedRoutes = (props) => {

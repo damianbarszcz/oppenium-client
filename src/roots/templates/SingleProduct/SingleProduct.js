@@ -25,7 +25,7 @@ const CartMsg = styled.div`
 
 const SingleProduct = (props) => {
     const [singleProduct, getSingleProduct] = useState([]);
-    const {handleSubmit, register,  formState: { errors } } = useForm();
+    const {handleSubmit, register } = useForm();
     const [addMsg, getAddMsg] = useState([]);
     const [addMsgStatus, getAddMsgStatus] = useState(false);
 

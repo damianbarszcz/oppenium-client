@@ -102,7 +102,7 @@ const ProductOrders = (props) => {
                   <OrderProductPrice>{item.product_price + ".00 $" } </OrderProductPrice>
               </OrderProduct>
 
-              { getTotalOrderPrice(item.product_price) }
+              { item.product_price ? getTotalOrderPrice(item.product_price) : '' }
             </>
             : 
 
@@ -115,7 +115,7 @@ const ProductOrders = (props) => {
                 <OrderProductPrice>{item.product_price + ".00 $" }</OrderProductPrice>
               </OrderProduct>
 
-              { getTotalOrderPrice(item.product_price) }
+              { item.product_price ? getTotalOrderPrice(item.product_price) : '' }
 
               {props.orders.length - 1 === index ? 
                 <OrdersPriceTotal><OrdersPriceTotalCaption>{ total + ".00 $" } </OrdersPriceTotalCaption> </OrdersPriceTotal>
